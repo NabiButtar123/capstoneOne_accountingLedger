@@ -16,7 +16,7 @@ Adding a deposit and then showcasing it has been added through the Ledger menu.
 
 ![image](Photo4.png "icon")
 
-Here I filtered with vendor. Only printing transactions done by the apple vendor
+Here I filtered with vendor. Only printing transactions done by the apple vendor.
 
 
 

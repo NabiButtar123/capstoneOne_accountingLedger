@@ -20,7 +20,7 @@ public class Main {
 
         loadTransactions();
         do {
-            System.out.println("\nWelcome to your personal Finance tracker!");
+            System.out.println("\nWelcome to the YearUP Bank teller!");
             System.out.println("Enter 'D' to add a deposit");
             System.out.println("Enter 'P' make a payment");
             System.out.println("Enter 'L' to transfer to the Ledger Screen");
@@ -78,6 +78,7 @@ public class Main {
             bufferedReader.close();
         } catch (Exception e) {
             e.printStackTrace();
+            System.out.println("Error while reading file");
         }
 
 
@@ -85,14 +86,25 @@ public class Main {
 
     private static void accountInformation() {
         double total = 0;
-        System.out.print("please enter account id to retrieve information: ");
+        System.out.print("Please enter account ID to retrieve information: ");
         String accountID = scanner.nextLine();
-        for (Transactions entries : tx)
-            if (entries.getAccount().equals(accountID)) {
-                System.out.println(entries);
-                total = total + entries.getAmount();
+
+        System.out.printf("%-12s %-10s %-20s %-20s %10s %15s\n", "Date", "Time", "Description", "Vendor", "Amount", "Account");
+        System.out.println("---------------------------------------------------------------------------------------------");
+
+        for (Transactions entry : tx) {
+            if (entry.getAccount().equals(accountID)) {
+                System.out.printf("%-12s %-10s %-20s %-20s %10.2f %15s\n",
+                        entry.getDate(),
+                        entry.getTime(),
+                        entry.getDescription(),
+                        entry.getVendor(),
+                        entry.getAmount(),
+                        entry.getAccount());
+                total += entry.getAmount();
             }
-        System.out.printf("NetBalance of account: %.2f\n ", total);
+        }
+        System.out.printf("\nBalance of account: %.2f\n", total);
 
     }
 
@@ -180,25 +192,52 @@ public class Main {
 
     private static void showAllTransactions() {
         System.out.println("\n-----All Transactions-----");
-        for (Transactions entries : tx)
-            System.out.println(entries);
+        System.out.printf("%-12s %-10s %-20s %-20s %10s %15s\n", "Date", "Time", "Description", "Vendor", "Amount", "Account");
+        System.out.println("---------------------------------------------------------------------------------------------");
+        for (Transactions entry : tx) {
+            System.out.printf("%-12s %-10s %-20s %-20s %10.2f %15s\n",
+                    entry.getDate(),
+                    entry.getTime(),
+                    entry.getDescription(),
+                    entry.getVendor(),
+                    entry.getAmount(),
+                    entry.getAccount());
+        }
     }
 
     private static void showDeposits() {
         System.out.println("----- Deposits Only -----");
-        for (Transactions entries : tx)
-            if (entries.getAmount() > 0) {
-                System.out.println(entries);
+        System.out.printf("%-12s %-10s %-20s %-20s %10s %15s\n", "Date", "Time", "Description", "Vendor", "Amount", "Account");
+        System.out.println("---------------------------------------------------------------------------------------------");
+        for (Transactions entry : tx) {
+            if (entry.getAmount() > 0) {
+                System.out.printf("%-12s %-10s %-20s %-20s %10.2f %15s\n",
+                        entry.getDate(),
+                        entry.getTime(),
+                        entry.getDescription(),
+                        entry.getVendor(),
+                        entry.getAmount(),
+                        entry.getAccount());
             }
+        }
 
     }
 
     private static void showPayments() {
         System.out.println("----- Payments Only -----");
-        for (Transactions entries : tx)
-            if (entries.getAmount() < 0) {
-                System.out.println(entries);
+        System.out.printf("%-12s %-10s %-20s %-20s %10s %15s\n", "Date", "Time", "Description", "Vendor", "Amount", "Account");
+        System.out.println("---------------------------------------------------------------------------------------------");
+        for (Transactions entry : tx) {
+            if (entry.getAmount() < 0) {
+                System.out.printf("%-12s %-10s %-20s %-20s %10.2f %15s\n",
+                        entry.getDate(),
+                        entry.getTime(),
+                        entry.getDescription(),
+                        entry.getVendor(),
+                        entry.getAmount(),
+                        entry.getAccount());
             }
+        }
 
     }
 
@@ -234,14 +273,19 @@ public class Main {
                     String vendorSearch = scanner.nextLine().toLowerCase();
                     System.out.println("Transactions for Vendor: " + vendorSearch);
                     for (Transactions entry : tx) {
-                        //using contains instead of equals for whitespace flexability
                         if (entry.getVendor().toLowerCase().contains(vendorSearch)) {
-                            System.out.println(entry);
+                            System.out.printf("%-12s %-10s %-20s %-20s %10.2f %15s\n",
+                                    entry.getDate(),
+                                    entry.getTime(),
+                                    entry.getDescription(),
+                                    entry.getVendor(),
+                                    entry.getAmount(),
+                                    entry.getAccount());
                         }
                     }
                     break;
                 case "6":
-                    customSerach();
+                    customSearch();
                     break;
                 case "0":
                     break;
@@ -280,15 +324,24 @@ public class Main {
                 break;
         }
 
+        System.out.printf("%-12s %-10s %-20s %-20s %10s %15s\n", "Date", "Time", "Description", "Vendor", "Amount", "Account");
+        System.out.println("---------------------------------------------------------------------------------------------");
+
         for (Transactions entry : tx) {
             LocalDate txDate = LocalDate.parse(entry.getDate());
             if ((txDate.isEqual(start) || txDate.isAfter(start)) && (txDate.isEqual(end) || txDate.isBefore(end))) {
-                System.out.println(entry);
+                System.out.printf("%-12s %-10s %-20s %-20s %10.2f %15s\n",
+                        entry.getDate(),
+                        entry.getTime(),
+                        entry.getDescription(),
+                        entry.getVendor(),
+                        entry.getAmount(),
+                        entry.getAccount());
             }
         }
     }
 
-    private static void customSerach() {
+    private static void customSearch() {
         System.out.print("Start Date (yyyy-mm-dd): ");
         String startDateString = scanner.nextLine();
         System.out.print("End Date (yyyy-mm-dd): ");
@@ -310,6 +363,7 @@ public class Main {
                 LocalDate txDate = LocalDate.parse(entry.getDate());
                 LocalDate startDate = LocalDate.parse(startDateString);
                 LocalDate endDate = LocalDate.parse(endDateString);
+                //different from report
                 if (txDate.isBefore(startDate) || txDate.isAfter(endDate)) {
                     matches = false;
                 }
