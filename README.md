@@ -12,7 +12,13 @@ prints out specific transactions according to their account number
 
 ![image](photo3.png "icon")
 
-Adding a deposit and then show casing it has been added through the Ledger menu.
+Adding a deposit and then showcasing it has been added through the Ledger menu.
+
+![image](photo4.png "icon")
+
+Here I filtered with vendor. Only printing transactions done by the apple vendor
+
+
 
 
 
