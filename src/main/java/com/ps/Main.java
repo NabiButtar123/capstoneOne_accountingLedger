@@ -63,7 +63,7 @@ public class Main {
             String line;
             while ((line = bufferedReader.readLine()) != null) {
                 String[] fields = line.split("\\|");
-                if (fields.length < 6) continue; // needed for out of bounds exception
+                if (fields.length < 6) continue; // needed for out of bounds exception, file whitespace
                 String date = fields[0];
                 String time = fields[1];
                 String description = fields[2];
@@ -326,7 +326,7 @@ public class Main {
                 matches = false;
             }
 
-             //Amount filter
+            //Amount filter
             //parsing will lead to error, must catch
             if (!amountStr.isEmpty()) {
                 try {
@@ -336,12 +336,11 @@ public class Main {
                     }
                 } catch (NumberFormatException e) {
                     System.out.println("Invalid amount input.");
-                    continue;
+                    matches = false;
                 }
-
-                if (matches) {
-                    System.out.println(entry);
-                }
+            }
+            if (matches) {
+                System.out.println(entry);
             }
         }
     }

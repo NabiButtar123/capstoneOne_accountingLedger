@@ -9,3 +9,10 @@ You can also filter out for specific transactions through dates such as months o
 ![image](photo2.png "icon")
 
 prints out specific transactions according to their account number
+
+![image](photo3.png "icon")
+
+Adding a deposit and then show casing it has been added through the Ledger menu.
+
+
+
